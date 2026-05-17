@@ -5,7 +5,7 @@ export class Library implements ILibrary{
     private _books: Book[];
 
     constructor() {
-        this.books = [];
+        this._books = [];
     }
 
     get books(): Array<Book> {
@@ -24,8 +24,8 @@ export class Library implements ILibrary{
         return this._books.push(books);
     }
 
-    removeBook(id: string){
-        this.books = this._books.filter(id);
+    removeBook(ID: string){
+        this.books = this._books.filter(book => book.ID !== ID);
     }
  
     findBookById(id: string){

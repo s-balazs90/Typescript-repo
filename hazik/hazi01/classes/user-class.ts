@@ -1,4 +1,4 @@
-import { Library } from "./classes/library-class";
+import { Library } from "./library-class";
 
 export class User {
     private _userID: string;
