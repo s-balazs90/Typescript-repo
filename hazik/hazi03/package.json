@@ -1,0 +1,23 @@
+{
+  "name": "ts-6",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "npm run build && node --experimental-specifier-resolution=node ./dist/index.js",
+    "build": "tsc",
+    "serve": "node --experimental-specifier-resolution=node ./dist/index.js",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "jest": "^30.4.2",
+    "ts-jest": "^29.4.11",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}

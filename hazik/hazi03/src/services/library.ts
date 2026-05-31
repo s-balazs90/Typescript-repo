@@ -1,0 +1,39 @@
+import { Book } from "../models/book.js";
+import { ILibrary } from "./ILibrary.js";
+
+export class Library implements ILibrary{
+    private _books: Book[];
+
+    constructor() {
+        this._books = [];
+    }
+
+    get books(): Array<Book> {
+        return this._books;
+    }
+
+    set books(newBook: Array<Book>) {
+        if (newBook && newBook.length > 0) {
+            this._books = newBook;
+        } else { 
+            console.error("Invalid ID");
+        }
+    }
+
+    addBook(books: Book){
+        return this._books.push(books);
+    }
+
+    removeBook(ID: string){
+        this.books = this._books.filter(book => book.ID !== ID);
+    }
+ 
+    findBookById(id: string){
+        return this._books.find(book => book.ID === id);
+    }
+
+    listAllBooks(){
+        return this.books;
+    }
+
+}
