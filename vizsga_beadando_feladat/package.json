@@ -1,0 +1,24 @@
+{
+  "name": "vizsga_beadando_feladat",
+  "version": "1.0.0",
+  "description": "Full stack webdeveloper course, Typescript module, exam assignment",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "build": "tsc",
+    "serve": "node --experimental-specifier-resolution=node ./dist/index.js",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "jest": "^30.4.2",
+    "ts-jest": "^29.4.11",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
