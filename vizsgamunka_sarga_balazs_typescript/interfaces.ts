@@ -2,6 +2,9 @@ export interface Hairdresser {
     id: number;
     name: string;
     description?: string;
+    services?: string[];
+    work_start_time?: string;
+    work_end_time?: string;
 }
 
 export interface Appointment {

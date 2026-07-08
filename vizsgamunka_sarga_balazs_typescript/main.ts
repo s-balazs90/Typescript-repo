@@ -1,10 +1,12 @@
 import { createAppointment, getHairdressers } from "./api.js";
 import { Hairdresser } from "./interfaces.js";
-import { getAppointments } from "./api.js"; 
+import { getAppointments } from "./api.js";
+declare const M: any; 
 
 async function startApp() {
-    const listContainer = document.querySelector('#hairdresser-list');
+    const listContainer = document.querySelector('#hairdresser-list') as HTMLElement;
     if (listContainer) {
+        listContainer.style.display = 'flex';
         listContainer.innerHTML = `
             <div class="container center-align" style="margin-top: 50px;">
                 <p>Fodrászok betöltése...</p>
@@ -27,14 +29,29 @@ function renderHairdresserList(list: Hairdresser[]) {
     //Generate HTML from list
     const HTMLcards = list.map(hairdresser => `
         <div class="col s12 m6 l4">
-            <div class="card hairdresser-card hoverable">
-                <div class="card-content">
-                    <span class="card-title">${hairdresser.name}</span>
-                    <p>Profi fodrász, aki segít neked a stílusod megtalálásában.</p>
+            <div class="card hairdresser-card hoverable center-align">
+                <div class="card-image grey lighten-4" style="padding: 20px 0;">
+                    <img src="${getProfilePic(hairdresser.id)}" 
+                         class="circle responsive-img" 
+                         style="width: 100px; height: 100px; margin: 0 auto; border: 3px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
                 </div>
-                <div class="card-action">
-                    <button class="btn waves-effect waves-light blue darken-3 booking-btn" data-id="${hairdresser.id}">
-                        <i class="material-icons left">event</i> Időpontfoglalás
+                <div class="card-content">
+                    <span class="card-title" style="font-size: 1.2rem; font-weight: 500;">${hairdresser.name}</span>
+                    <p class="blue-text text-darken-2" style="font-size: 0.8rem; margin-bottom: 10px;">MASTER STYLIST</p>
+                    
+                <div class="services-container">
+                    ${(hairdresser.services && hairdresser.services.length > 0) 
+                        ? hairdresser.services.map(s => `<span class="chip">${s}</span>`).join('') 
+                        : '<span class="chip">Általános fodrászat</span>'}
+                </div>
+                </div>
+                <div class="card-action" style="border-top: none;">
+                    <button class="btn waves-effect waves-light blue darken-3 booking-btn" 
+                            data-id="${hairdresser.id}" 
+                            data-name="${hairdresser.name}" 
+                            style="width: 100%; border-radius: 20px;">
+                        <i class="material-icons">event</i>
+                        <span>Időpontfoglalás</span>
                     </button>
                 </div>
             </div>
@@ -42,16 +59,17 @@ function renderHairdresserList(list: Hairdresser[]) {
     `).join('');
 
     //Admin button and HTML cards
+    listContainer.className = "row";
+    listContainer.innerHTML = HTMLcards;
     listContainer.innerHTML = `
         <div class="row">
             <div class="col s12">
-                <button id="admin-login-btn" class="btn-flat waves-effect right">
-                    <i class="material-icons left">settings</i>Admin
-                </button>
+
             </div>
             ${HTMLcards}
         </div>
     `;
+
     //Eventlistener for Admin button
     document.getElementById('admin-login-btn')?.addEventListener('click', showAdminView);
     
@@ -61,68 +79,77 @@ function renderHairdresserList(list: Hairdresser[]) {
     const bookingBtn = target.closest('button[data-id]');
 
     if (bookingBtn) {
-        const hairdresserId = (bookingBtn as HTMLElement).dataset.id;
-        if (hairdresserId) {
-            showBookingForm(hairdresserId);
-        }
+    const btn = bookingBtn as HTMLElement;
+    const id = btn.dataset.id;
+    const name = btn.dataset.name;
+    if (id && name) {
+        showBookingForm(id, name);
     }
+}
 });
 }
 
-function showBookingForm(hairdresserId: string){
-     const listContainer = document.querySelector('#hairdresser-list');
+function showBookingForm(hairdresserId: string, hairdresserName: string){
+     const listContainer = document.querySelector('#hairdresser-list') as HTMLElement;
      if(!listContainer){
         return;
      }
 
+     listContainer.style.display = 'block'
      const today = new Date().toISOString().split('T')[0];
 
     listContainer.innerHTML = `
-        <div class="container">
-            <div class="card">
-                <div class="card-content">
-                    <span class="card-title">Időpontfoglalás (Fodrász ID: ${hairdresserId})</span>
-                    
-                    <div class="row">
-                        <div class="input-field col s12 m6">
-                            <i class="material-icons prefix">account_circle</i>
-                            <input type="text" id="customer_name">
-                            <label for="customer_name">Neved</label>
+    <div class="booking-form container">
+        <div class="row">
+            <div class="col s12 m10 offset-m1 l8 offset-l2">
+                <div class="card">
+                    <div class="card-content">
+                        <h4 class="center-align" style="margin-bottom: 30px;">Foglalás: ${hairdresserName}</h4>
+                        <span class="card-title grey-text text-darken-1" style="font-size: 1rem;">Időpontfoglalás (Azonosító: ${hairdresserId})</span>
+                        
+                        <div class="row">
+                            <div class="input-field col s12 m6">
+                                <i class="material-icons prefix">account_circle</i>
+                                <input type="text" id="customer_name">
+                                <label for="customer_name" class="active">Neved</label>
+                            </div>
+                            <div class="input-field col s12 m6">
+                                <i class="material-icons prefix">phone</i>
+                                <input type="text" id="customer_phone">
+                                <label for="customer_phone" class="active">Telefonszámod</label>
+                            </div>
                         </div>
-                        <div class="input-field col s12 m6">
-                            <i class="material-icons prefix">phone</i>
-                            <input type="text" id="customer_phone">
-                            <label for="customer_phone">Telefonszámod</label>
-                        </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="input-field col s12 m6">
-                            <i class="material-icons prefix">today</i>
-                            <input type="date" id="appointment_date" min="${today}">
-                            <label class="active" for="appointment_date">Válassz dátumot</label>
+                        <div class="row">
+                            <div class="input-field col s12 m6">
+                                <i class="material-icons prefix">today</i>
+                                <input type="date" id="appointment_date" min="${today}">
+                                <label class="active" for="appointment_date">Válassz dátumot</label>
+                            </div>
+                            <div class="input-field col s12 m6">
+                                <label class="active">Szolgáltatás</label>
+                                <select id="service" class="browser-default" style="margin-top: 10px;">
+                                    <option value="" disabled selected>Válassz szolgáltatást</option>
+                                    <option value="Hajvágás">Hajvágás</option>
+                                    <option value="Festés">Festés</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="input-field col s12 m6">
-                            <select id="service" class="browser-default">
-                                <option value="" disabled selected>Válassz szolgáltatást</option>
-                                <option value="Hajvágás">Hajvágás</option>
-                                <option value="Festés">Festés</option>
-                            </select>
+
+                        <h6 style="margin-top: 30px;">Szabad időpontok:</h6>
+                        <div id="time-slots" style="margin-bottom: 20px; min-height: 50px;"></div>
+
+                        <div class="card-action right-align">
+                            <button id="back-btn" class="btn-flat waves-effect" style="margin-right: 10px;">Vissza</button>
+                            <button id="save-btn" class="btn waves-effect waves-light green darken-2">
+                                <i class="material-icons left">check</i>Lefoglalom
+                            </button>
                         </div>
-                    </div>
-
-                    <h6>Szabad időpontok:</h6>
-                    <div id="time-slots" style="margin-bottom: 20px;"></div>
-
-                    <div class="card-action">
-                        <button id="save-btn" class="btn waves-effect waves-light green darken-2">
-                            <i class="material-icons left">check</i>Lefoglalom
-                        </button>
-                        <button id="back-btn" class="btn-flat waves-effect">Vissza</button>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     `;
     
             //Input field handling
@@ -265,7 +292,12 @@ dateElement.addEventListener('change', async () => {
             document.getElementById("back-btn")?.addEventListener('click', () => {
             startApp();
             });
-                        }
+            setTimeout(() => {
+                if (typeof M !== 'undefined') {
+                    M.updateTextFields();
+                }
+            }, 100);
+}
 
 
 async function showAdminView() {
@@ -341,6 +373,23 @@ function showSuccessPage() {
     `;
 
     document.getElementById('back-to-home')?.addEventListener('click', startApp);
+}
+
+function getProfilePic(id: number): string {
+    // Adding pictures by API ID
+    const photoMap: { [key: number]: string } = {
+        6: "https://randomuser.me/api/portraits/women/44.jpg", // Kiss Anna
+        7: "https://randomuser.me/api/portraits/men/32.jpg",   // Nagy Lajos
+        8: "https://randomuser.me/api/portraits/men/46.jpg",   // Szabó Tamás
+        9: "https://randomuser.me/api/portraits/women/68.jpg", // Molnár Judit
+        10: "https://randomuser.me/api/portraits/women/17.jpg",// Tóth Éva
+        11: "https://randomuser.me/api/portraits/men/67.jpg",   // Farkas Péter
+        12: "https://randomuser.me/api/portraits/women/1.jpg",// Varga Zsófia
+        13: "https://randomuser.me/api/portraits/men/62.jpg"   // Horváth Dániel
+    };
+
+    // If the ID is not in the list, get basic avatar
+    return photoMap[id] || `https://i.pravatar.cc/150?u=${id}`;
 }
 
 startApp();

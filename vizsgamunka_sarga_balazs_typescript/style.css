@@ -46,3 +46,95 @@ th {
 .admin-view tr:nth-child(even) {
     background-color: #f9f9f9; 
 }
+
+body {
+    background-color: #fcfcfc;
+    color: #333;
+}
+
+.card {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+}
+
+.slot-btn.booked {
+    opacity: 0.5;
+    text-decoration: line-through;
+}
+
+.slot-btn.selected {
+    background-color: #1565c0 !important;
+    color: white !important;
+    transform: scale(1.05);
+}
+
+.chip {
+    font-size: 0.8rem;
+    height: 25px;
+    line-height: 25px;
+    background-color: #e3f2fd;
+}
+
+#hairdresser-list.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.hairdresser-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin-bottom: 20px;
+}
+
+.card-content {
+    flex-grow: 1;
+}
+
+.services-container {
+    min-height: 100px;
+    margin-bottom: 15px;
+}
+
+.booking-btn {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: auto !important;
+    padding: 10px 0 !important;
+    line-height: 1.2 !important;
+}
+
+.booking-btn i {
+    margin-bottom: 5px !important;
+    margin-right: 0 !important;
+}
+
+.booking-btn span {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+}
+
+.booking-btn {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center;
+    justify-content: center;
+    height: auto !important;
+    padding: 10px 0 !important;
+}
+
+.booking-btn i {
+    margin: 0 !important;
+}
+
+.booking-btn span {
+    font-size: 0.7rem;
+    line-height: 1.2;
+}
