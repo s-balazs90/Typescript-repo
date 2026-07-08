@@ -1,0 +1,26 @@
+{
+  "name": "final-exam",
+  "version": "1.0.0",
+  "description": "Full stack webdeveloper course, Typescript module, final exam",
+  "main": "dist/index.js",
+"scripts": {
+  "dev": "vite",
+  "build": "tsc && vite build",
+  "preview": "vite preview"
+},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "jest": "^30.4.2",
+    "ts-jest": "^29.4.11",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.16"
+  },
+  "dependencies": {
+    "undici-types": "^7.24.6"
+  }
+}
